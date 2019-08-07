@@ -1,0 +1,25 @@
+{
+  "name": "RevealURL",
+  "version": "1.0",
+  "description": "Validate any shortURL with RevealURL ",
+  "permissions": ["contextMenus"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_icon": {
+      "16": "images/icon_16.png",
+      "32": "images/icon_32.png",
+      "48": "images/icon_48.png",
+      "128": "images/icon_128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon_16.png",
+    "32": "images/icon_32.png",
+    "48": "images/icon_48.png",
+    "128": "images/icon_128.png"
+  },
+  "manifest_version": 2
+}
