@@ -2,9 +2,15 @@
   "name": "RevealURL",
   "version": "1.0",
   "description": "Validate any shortURL with RevealURL ",
-  "permissions": ["contextMenus"],
+  "permissions": [
+    "contextMenus",
+    "http://*/*",
+    "notifications"
+  ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": false
   },
   "page_action": {
