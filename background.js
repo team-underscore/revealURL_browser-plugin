@@ -8,28 +8,26 @@ chrome.contextMenus.create(ContextMenuItem);
 
 // Creates a Status notification
 chrome.contextMenus.onClicked.addListener(function (info) {
-  var opt = {
-    iconUrl: 'images/icon_128.png',
-    type: 'basic',
-    title: 'RevealURL',
-    message: 'Please wait while we get the data',
-    priority: 0
-  };
-  chrome.notifications.create(`${Date.now()}`, opt);
+
+  createNotification('RevealURL', 'Please wait while we get the data', 0)
 
   // API call
-  var xmlhttp = new XMLHttpRequest();
+  var xhr = new XMLHttpRequest();
   var backendURL = "";
-  xmlhttp.open("POST", theUrl);
-  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.open("POST", backendURL);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-  xmlhttp.onreadystatechange = function () {
-    if (xmlhttp.readyState === 4) {
-      handleCallback(xmlhttp.response)
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        handleCallback(xhr.response)
+      } else {
+        createNotification('ERROR', 'Please try again later  😓', 1)
+      }
     }
   }
 
-  xmlhttp.send(JSON.stringify({ "url": info.linkUrl }));
+  xhr.send(JSON.stringify({ "url": info.linkUrl }));
 
 });
 
@@ -67,15 +65,16 @@ function handleCallback(resp) {
     url = '😑 Thats not a short URL'
   }
 
+  createNotification(title, url, 1)
+}
 
-  // Shows the data
-  var opt = {
+function createNotification(title, message, priority) {
+  var options = {
     iconUrl: 'images/icon_128.png',
     type: 'basic',
     title: title,
-    message: url,
-    priority: 1,
-    eventTime: 5
+    message: message,
+    priority: priority
   };
-  chrome.notifications.create(`${Date.now()}`, opt)
+  chrome.notifications.create(`${Date.now()}`, options)
 }
