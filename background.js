@@ -1,14 +1,25 @@
 let ContextMenuItem = {
-  "id": "RevealURLMenu",
+  "id": `${Date().now}`,
   "title": "RevealURL",
   "contexts": ["link"]
 }
 
 chrome.contextMenus.create(ContextMenuItem);
 
+// Creates a Status notification
 chrome.contextMenus.onClicked.addListener(function (info) {
-  var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-  var theUrl = "";
+  var opt = {
+    iconUrl: 'images/icon_128.png',
+    type: 'basic',
+    title: 'RevealURL',
+    message: 'Please wait while we get the data',
+    priority: 0
+  };
+  chrome.notifications.create(`${Date.now()}`, opt);
+
+  // API call
+  var xmlhttp = new XMLHttpRequest();
+  var backendURL = "";
   xmlhttp.open("POST", theUrl);
   xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
@@ -19,56 +30,52 @@ chrome.contextMenus.onClicked.addListener(function (info) {
   }
 
   xmlhttp.send(JSON.stringify({ "url": info.linkUrl }));
-  
+
 });
 
-  function create_UUID() {
-    var dt = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (dt + Math.random() * 16) % 16 | 0;
-      dt = Math.floor(dt / 16);
-      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return uuid;
-  }
 
+function handleCallback(resp) {
+  resp = JSON.parse(resp);
 
-  function handleCallback(resp) {
-    let title, safetyProbability, url;
+  let title, safetyProbability, url;
 
-    if (resp.isShortUrl) {
+  if (resp.isShortUrl) {
 
-      if (resp.spamDetails) {
+    if (resp.spamDetails) {
 
-        safetyProbability = (1 - (resp.spamDetails.servicesReportSpam / resp.spamDetails.servicesChecked)).toFixed(2) * 100;
+      safetyProbability = (1 - (resp.spamDetails.servicesReportSpam / resp.spamDetails.servicesChecked)).toFixed(2) * 100;
 
-        if (safetyProbability < 0.25) {
-          title = `👹 SPAM`;
-        } else if (safetyProbability > 0.25 && safetyProbability <= 0.5) {
-          title = `⚠️ BE CAREFUL`;
-        } else if (safetyProbability > 0.5 && safetyProbability <= 0.75) {
-          title = `🤞 ALMOST SAFE`;
-        } else {
-          title = `👍 SAFE`;
-        }
-
-        url = resp.url;
+      if (safetyProbability < 0.25) {
+        title = `👹 SPAM`;
+      } else if (safetyProbability > 0.25 && safetyProbability <= 0.5) {
+        title = `⚠️ BE CAREFUL`;
+      } else if (safetyProbability > 0.5 && safetyProbability <= 0.75) {
+        title = `🤞 ALMOST SAFE`;
       } else {
-
-        title = `🤔 No info`;
-        url = '';
-
+        title = `👍 SAFE`;
       }
+
+      url = resp.url;
     } else {
-      title = `Hey There !!`;
-      url = '😑 Thats not a short URL'
+
+      title = `🤔 No info`;
+      url = '';
+
     }
-
-
-    chrome.notifications.create(create_UUID(), {
-      title: title,
-      iconUrl: chrome.runtime.getURL("images/icon_128.png"),
-      type: 'basic',
-      message: url || ''
-    }, function () { });
+  } else {
+    title = `Hey There !!`;
+    url = '😑 Thats not a short URL'
   }
+
+
+  // Shows the data
+  var opt = {
+    iconUrl: 'images/icon_128.png',
+    type: 'basic',
+    title: title,
+    message: url,
+    priority: 1,
+    eventTime: 5
+  };
+  chrome.notifications.create(`${Date.now()}`, opt)
+}
