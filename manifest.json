@@ -1,10 +1,10 @@
 {
   "name": "RevealURL",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Validate any shortURL with RevealURL ",
   "permissions": [
     "contextMenus",
-    "http://*/*",
+    "activeTab",
     "notifications"
   ],
   "background": {
