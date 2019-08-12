@@ -1,5 +1,5 @@
 let ContextMenuItem = {
-  "id": `${Date().now}`,
+  "id": `RevealURL_Extension`,
   "title": "RevealURL",
   "contexts": ["link"]
 }
@@ -9,7 +9,7 @@ chrome.contextMenus.create(ContextMenuItem);
 // Creates a Status notification
 chrome.contextMenus.onClicked.addListener(function (info) {
 
-  createNotification('RevealURL', 'Please wait while we get the data', 0)
+  createNotification('RevealURL', 'Please wait while we get the data', 1)
 
   // API call
   var xhr = new XMLHttpRequest();
@@ -22,7 +22,7 @@ chrome.contextMenus.onClicked.addListener(function (info) {
       if (xhr.status === 200) {
         handleCallback(xhr.response)
       } else {
-        createNotification('ERROR', 'Please try again later  😓', 1)
+        createNotification('ERROR', 'Please try again later  😓', 2)
       }
     }
   }
@@ -65,7 +65,7 @@ function handleCallback(resp) {
     url = '😑 Thats not a short URL'
   }
 
-  createNotification(title, url, 1)
+  createNotification(title, url, 2)
 }
 
 function createNotification(title, message, priority) {
