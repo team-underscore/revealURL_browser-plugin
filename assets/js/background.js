@@ -4,7 +4,13 @@ let ContextMenuItem = {
   "contexts": ["link"]
 }
 
-chrome.contextMenus.create(ContextMenuItem);
+chrome.runtime.onInstalled.addListener(function () {
+  chrome.contextMenus.create(ContextMenuItem);
+  chrome.storage.sync.set({
+    revealedUrls: []
+  });
+});
+
 
 // Creates a Status notification
 chrome.contextMenus.onClicked.addListener(function (info) {
@@ -20,7 +26,7 @@ chrome.contextMenus.onClicked.addListener(function (info) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
-        handleCallback(xhr.response)
+        handleCallback(xhr.response, info.linkUrl)
       } else {
         createNotification('ERROR', 'Please try again later  😓', 2)
       }
@@ -32,10 +38,11 @@ chrome.contextMenus.onClicked.addListener(function (info) {
 });
 
 
-function handleCallback(resp) {
+function handleCallback(resp, shortUrl) {
   resp = JSON.parse(resp);
 
   let title, safetyProbability, url;
+  let that = this;
 
   if (resp.isShortUrl) {
 
@@ -55,11 +62,20 @@ function handleCallback(resp) {
 
       url = resp.url;
     } else {
-
       title = `🤔 No info`;
       url = '';
-
     }
+
+    let normalizedResp = {
+      longUrl: resp.url,
+      shortUrl: shortUrl,
+      safetyProbability: title
+    }
+
+    chrome.storage.sync.get(['revealedUrls'], function (result) {
+      that.accessStorage(result.revealedUrls, normalizedResp);
+    });
+
   } else {
     title = `Hey There !!`;
     url = '😑 Thats not a short URL'
@@ -70,11 +86,27 @@ function handleCallback(resp) {
 
 function createNotification(title, message, priority) {
   var options = {
-    iconUrl: 'images/icon_128.png',
+    iconUrl: 'assets/images/icon_128.png',
     type: 'basic',
     title: title,
     message: message,
     priority: priority
   };
   chrome.notifications.create(`${Date.now()}`, options)
+}
+
+function accessStorage(storedData, data) {
+  if (storedData.length > 0) {
+    let isDuplicate = storedData.findIndex(function (item) {
+      return item.shortUrl === data.shortUrl
+    })
+
+    if (isDuplicate === -1) {
+      storedData.push(data);
+      chrome.storage.sync.set({ revealedUrls: storedData });
+    }
+  } else {
+    storedData.push(data);
+    chrome.storage.sync.set({ revealedUrls: storedData });
+  }
 }
