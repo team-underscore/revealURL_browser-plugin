@@ -24,6 +24,14 @@ body {
 
 h1 {
   font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+h1>img {
+  width: 30px;
+  margin-right: 8px;
 }
 
 ul {
@@ -80,7 +88,6 @@ p {
 .url_short {
   opacity: 0.8;
 }
-
 
 .share_url:hover {
   color: var(--secondary-color)
