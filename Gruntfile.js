@@ -93,6 +93,14 @@ module.exports = function (grunt) {
 
   // Default task(s).
   // grunt.registerTask('default', ['jshint']);
-  grunt.registerTask('default', ['jshint', 'terser', 'stylelint', 'imagemin', 'htmlmin', 'copy', 'compress']);
+  grunt.registerTask('default', [
+    'jshint',
+    'terser',
+    'stylelint',
+    'imagemin',
+    'htmlmin',
+    'copy',
+    'compress'
+  ]);
 
 };
