@@ -1,0 +1,95 @@
+:root {
+  --primary-color: #030616;
+  --secondary-color: #2529D8;
+  --error-color: #FF005E;
+  --font-color: #fff;
+}
+
+body {
+
+  /* Reset */
+  all: unset;
+
+  display: block;
+  height: 300px;
+  width: 300px;
+  background-color: var(--primary-color);
+  margin: 8px;
+  border-bottom: 2px solid var(--secondary-color);
+  border-top: 2px solid var(--secondary-color);
+  color: var(--font-color);
+  font-family: monospace;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+h1>img {
+  width: 30px;
+  margin-right: 8px;
+}
+
+ul {
+  list-style: none;
+  display: block;
+  margin: 0px;
+  padding: 0px;
+}
+
+li {
+  border-bottom: 1px solid #fff;
+  padding: 4px auto;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+p {
+  margin: 0;
+  padding: 4px 0px;
+}
+
+.text--center {
+  text-align: center;
+}
+
+.revealed_urls {
+  max-height: 220px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.status_label {
+  text-decoration: none;
+}
+
+.url_long,
+.url_short,
+.share_url {
+  max-width: 280px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  font-size: 12px;
+}
+
+.url_long {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.url_short {
+  opacity: 0.8;
+}
+
+.share_url:hover {
+  color: var(--secondary-color)
+}

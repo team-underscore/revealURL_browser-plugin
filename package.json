@@ -1,0 +1,32 @@
+{
+  "name": "unreveal-extension",
+  "version": "2.0.1",
+  "description": "RevealURL chrome extension ---",
+  "scripts": {
+    "build": "grunt build",
+    "git:tag": "git tag v${npm_package_version}",
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/team-underscore/revealURL_chrome-plugin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/team-underscore/revealURL_chrome-plugin/issues"
+  },
+  "homepage": "https://github.com/team-underscore/revealURL_chrome-plugin#readme",
+  "devDependencies": {
+    "grunt": "^1.0.4",
+    "grunt-contrib-compress": "^1.5.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-htmlmin": "^3.1.0",
+    "grunt-contrib-imagemin": "^3.1.0",
+    "grunt-contrib-jshint": "^2.1.0",
+    "grunt-stylelint": "^0.11.1",
+    "grunt-terser": "^0.1.0",
+    "stylelint": "^10.1.0"
+  }
+}
