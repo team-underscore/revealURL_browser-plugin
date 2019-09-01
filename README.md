@@ -1,15 +1,13 @@
-RevealURL chrome extension
----
+# <img src="dist/assets/images/icon_128.png" width="45" align="left"> RevealURL Browser Extension
 
-To Build
+This repo contains the source code for the [RevealURL](https://revealurl.com) browser plugin.
 
-```
-brew install node
+# Contribution
 
-npm install jsonfile
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-npm install shelljs
-```
 
-1. Change the version number in `manifest.json`
-2. run `node deploy.js` to get build file
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
